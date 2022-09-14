@@ -20,11 +20,11 @@ public class HttpServer {
                 var serverSocket = new ServerSocket(this.tcpPort);
         ) {
             System.out.println("Server accepting requests on port " + tcpPort);
-
-            var acceptedSocket = serverSocket.accept();
-            var connectionHandler = new ConnectionHandler(acceptedSocket);
-            connectionHandler.handle();
-
+            while (true) {
+                var acceptedSocket = serverSocket.accept();
+                var connectionHandler = new ConnectionHandler(acceptedSocket);
+                new Thread(connectionHandler).start();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
